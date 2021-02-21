@@ -21,14 +21,23 @@ public class PlayerController : MonoBehaviour
         // Movement
         float horz = Input.GetAxisRaw("Horizontal");
         float vert = Input.GetAxisRaw("Vertical");
-        Vector3 movement = new Vector3(horz, 0f, vert).normalized;
+        
+        // move player relative to the camera's forward vector
+        var camera = Camera.main;
+        var forward = camera.transform.forward;
+        var right = camera.transform.right;
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
 
-        if (movement.magnitude >= 0.1f)
+        var desiredMoveDirection = forward * vert + right * horz;
+        if (desiredMoveDirection.magnitude >= 0.1f)
         {
-            controller.Move(movement * speed * Time.deltaTime);
+            controller.Move(desiredMoveDirection * speed * Time.deltaTime);
         }
 
-        // Direction
+        // Face mouse position direction
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
