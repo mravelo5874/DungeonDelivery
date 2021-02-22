@@ -68,8 +68,15 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        if (other.gameObject.layer == 11)
+        // wall layer
+        if (other.gameObject.layer == GameManager.WallLayer)
         {
+            Destroy(gameObject);
+        }
+        // enemy layer
+        else if (other.gameObject.layer == GameManager.EnemyLayer)
+        {
+            other.gameObject.GetComponent<Enemy>().Damage(damage);
             Destroy(gameObject);
         }
     }
