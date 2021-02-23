@@ -40,8 +40,8 @@ public class ProjectileModifier
     public int numSplits = 0;
 
     // multishot
-    public bool multishot = false;
-    public int numShots = 1;
+    public bool doubleShot;
+    public bool tripleShot;
 
     // ################################
     // #    OTHER

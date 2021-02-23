@@ -7,11 +7,16 @@ public class ProjectileController : MonoBehaviour
     public GameObject projectile;
     public List<ProjectileModifier> modifiers;
     public int randomModifiers;
-
+    private float projSpawn = 1f;
+    
+    // shoot rate
     private const float rateDefault = 0.5f;
     private float rate;
     private float rateTimer = 0f;
     private bool recharge = false;
+
+    // multishot
+    private int numShots = 1;
 
     // randomizer options
     private float[] rangeMultOpts = { 0.75f, 1f, 1.25f };
@@ -30,12 +35,15 @@ public class ProjectileController : MonoBehaviour
     private float[] speedAddOpts = { 0f, 2f, 4f };
 
     private int[] bouncesOpts = { 0, 0, 1 };
-    private int[] splitOpts = { 1, 1, 1 };
+    private int[] splitOpts = { 0, 0, 2 };
+
+    private bool[] doubleShotOpts = { false, false, true };
+    private bool[] tripleShotOpts = { false, false, true };
 
 
     private void Awake() 
     {
-        UpdateRate();    
+        UpdatePreMods();  
     }
 
     private void Update()
@@ -78,11 +86,13 @@ public class ProjectileController : MonoBehaviour
                     mod.speedAdd = speedAddOpts[Random.Range(0, 3)];
                     mod.numBounces = bouncesOpts[Random.Range(0, 3)];
                     mod.numSplits = splitOpts[Random.Range(0, 3)];
+                    mod.doubleShot = doubleShotOpts[Random.Range(0, 3)];
+                    mod.tripleShot = tripleShotOpts[Random.Range(0, 3)];
 
                     modifiers.Add(mod);
                 }
 
-                UpdateRate();
+                UpdatePreMods();
                 rateTimer = 0f;
                 recharge = false;
                 
@@ -93,18 +103,65 @@ public class ProjectileController : MonoBehaviour
 
     void Shoot()
     {
-        var proj = Instantiate(projectile, transform.position + (transform.forward * 2), transform.rotation);
-        proj.GetComponent<Projectile>().modify(modifiers);
-        proj.GetComponent<Projectile>().send(transform.forward);
+        // single shot
+        if (numShots == 1)
+        {
+            var proj = Instantiate(projectile, transform.position + (transform.forward * projSpawn), transform.rotation);
+            ProjectileParent.instance.add(proj);
+            proj.GetComponent<Projectile>().modify(modifiers);
+            proj.GetComponent<Projectile>().send(transform.forward);
+        }
+        // double shot
+        else if (numShots == 2)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                var proj = Instantiate(projectile, transform.position + (transform.forward * projSpawn), transform.rotation);
+                ProjectileParent.instance.add(proj);
+                proj.GetComponent<Projectile>().modify(modifiers);
+
+                Quaternion quat;
+                if (i == 0) quat = Quaternion.Euler(0, 15, 0);
+                else quat = Quaternion.Euler(0, -15, 0);
+
+                var angle = quat * transform.forward;
+                proj.GetComponent<Projectile>().send(angle);
+            }
+        }
+        // triple shot
+        else if (numShots == 3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                var proj = Instantiate(projectile, transform.position + (transform.forward * projSpawn), transform.rotation);
+                ProjectileParent.instance.add(proj);
+                proj.GetComponent<Projectile>().modify(modifiers);
+
+                Quaternion quat;
+                if (i == 0) quat = Quaternion.Euler(0, 30, 0);
+                else if (i == 1) quat = Quaternion.Euler(0, 0, 0);
+                else quat = Quaternion.Euler(0, -30, 0);
+
+                var angle = quat * transform.forward;
+                proj.GetComponent<Projectile>().send(angle);
+            }
+        }
+        
     }
 
-    void UpdateRate()
+    void UpdatePreMods()
     {
         rate = rateDefault;
+        numShots = 1;
         foreach (var modifier in modifiers)
         {
             rate *= modifier.rateMult;
             rate += modifier.rateAdd;
+
+            if (modifier.doubleShot && numShots < 2)
+                numShots = 2;
+            if (modifier.tripleShot && numShots < 3)
+                numShots = 3;
         }
     }
 }

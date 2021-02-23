@@ -176,26 +176,22 @@ public class Projectile : MonoBehaviour
                 // +Z NORM
                 if (norm.z > norm.x && vect.x > 0f && vect.z > 0f)
                 {
-                    print ("+z norm 1");
                     angle1 *= -1;
                     angle2 *= -1;
                     fixedNorm = new Vector3(1, 0, 0);
                 }
                 else if (norm.z >norm.x && vect.x < 0f && vect.z > 0f)
                 {
-                    print ("+z norm 2");
                     fixedNorm = new Vector3(-1, 0, 0);
                 }
 
                 // -Z NORM
                 else if (norm.z < norm.x && vect.x > 0f && vect.z < 0f)
                 {
-                    print ("-z norm 1");
                     fixedNorm = new Vector3(1, 0, 0);
                 }
                 else if (norm.z < norm.x && vect.x < 0f && vect.z < 0f)
                 {
-                    print ("-z norm 2");
                     angle1 *= -1;
                     angle2 *= -1;
                     fixedNorm = new Vector3(-1, 0, 0);
@@ -204,26 +200,22 @@ public class Projectile : MonoBehaviour
                 // -X NORM
                 else if (norm.x < norm.z && vect.x < 0f && vect.z > 0f)
                 {
-                    print ("-x norm 1");
                     fixedNorm = new Vector3(0, 0, 1);
                 }
                 else if (norm.x < norm.z && vect.x < 0f && vect.z < 0f)
                 {
-                    print ("-x norm 2");
                     fixedNorm = new Vector3(0, 0, -1);
                 }
 
                 // +X NORM
                 else if (norm.x > norm.z && vect.x > 0f && vect.z < 0f)
                 {
-                    print ("+x norm 1");
                     angle1 *= -1;
                     angle2 *= -1;
                     fixedNorm = new Vector3(0, 0, -1);
                 }
                 else if (norm.x > norm.z && vect.x > 0f && vect.z > 0f)
                 {
-                    print ("+x norm 2");
                     fixedNorm = new Vector3(0, 0, 1);
                 }
 
@@ -240,6 +232,8 @@ public class Projectile : MonoBehaviour
 
                 var proj1 = Instantiate(projectile, contactPos, Quaternion.identity);
                 var proj2 = Instantiate(projectile, contactPos, Quaternion.identity);
+                ProjectileParent.instance.add(proj1);
+                ProjectileParent.instance.add(proj2);
 
                 ProjectileModifier mod = new ProjectileModifier();
                 mod.rangeMult = 1f;
