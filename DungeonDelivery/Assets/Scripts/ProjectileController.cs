@@ -6,6 +6,7 @@ public class ProjectileController : MonoBehaviour
 {
     public GameObject projectile;
     public List<ProjectileModifier> modifiers;
+    public int randomModifiers;
 
     private const float rateDefault = 0.5f;
     private float rate;
@@ -13,20 +14,24 @@ public class ProjectileController : MonoBehaviour
     private bool recharge = false;
 
     // randomizer options
-    private float[] rangeMultOpts = { 0.5f, 1f, 2f };
-    private float[] rangeAddOpts = { 0f, 1f, 5f };
+    private float[] rangeMultOpts = { 0.75f, 1f, 1.25f };
+    private float[] rangeAddOpts = { 0f, 1f, 2f };
     
     private float[] rateMultOpts = { 0.25f, 0.5f, 1f };
     private float[] rateAddOpts = { 0f, 0.25f, 1f };
 
-    private float[] damageMultOpts = { 0.5f, 1f, 2f };
-    private float[] damageAddOpts = { 0f, 5f, 10f };
+    private float[] damageMultOpts = { 0.5f, 1f, 1.5f };
+    private float[] damageAddOpts = { 0f, 1f, 5f };
 
-    private float[] sizeMultOpts = { 0.25f, 1f, 2f };
-    private float[] sizeAddOpts = { 0f, 1f, 2f };
+    private float[] sizeMultOpts = { 0.25f, 1f, 1.25f };
+    private float[] sizeAddOpts = { 0f, 0.25f, 0.5f };
 
     private float[] speedMultOpts = { 0.25f, 1f, 1.5f };
     private float[] speedAddOpts = { 0f, 2f, 4f };
+
+    private int[] bouncesOpts = { 0, 0, 1 };
+    private int[] splitOpts = { 1, 1, 1 };
+
 
     private void Awake() 
     {
@@ -58,38 +63,30 @@ public class ProjectileController : MonoBehaviour
             {
                 modifiers.Clear();
 
-                ProjectileModifier mod1 = new ProjectileModifier();
-                mod1.rangeMult = rangeMultOpts[Random.Range(0, 3)];
-                mod1.rangeAdd = rangeAddOpts[Random.Range(0, 3)];
-                mod1.rateMult = rateMultOpts[Random.Range(0, 3)];
-                mod1.rateAdd = rateAddOpts[Random.Range(0, 3)];
-                mod1.damageMult = damageMultOpts[Random.Range(0, 3)];
-                mod1.damageAdd = damageAddOpts[Random.Range(0, 3)];
-                mod1.sizeMult = sizeMultOpts[Random.Range(0, 3)];
-                mod1.sizeAdd = sizeAddOpts[Random.Range(0, 3)];
-                mod1.speedMult = speedMultOpts[Random.Range(0, 3)];
-                mod1.speedAdd = speedAddOpts[Random.Range(0, 3)];
+                for (int i = 0; i < randomModifiers; i++)
+                {
+                    ProjectileModifier mod = new ProjectileModifier();
+                    mod.rangeMult = rangeMultOpts[Random.Range(0, 3)];
+                    mod.rangeAdd = rangeAddOpts[Random.Range(0, 3)];
+                    mod.rateMult = rateMultOpts[Random.Range(0, 3)];
+                    mod.rateAdd = rateAddOpts[Random.Range(0, 3)];
+                    mod.damageMult = damageMultOpts[Random.Range(0, 3)];
+                    mod.damageAdd = damageAddOpts[Random.Range(0, 3)];
+                    mod.sizeMult = sizeMultOpts[Random.Range(0, 3)];
+                    mod.sizeAdd = sizeAddOpts[Random.Range(0, 3)];
+                    mod.speedMult = speedMultOpts[Random.Range(0, 3)];
+                    mod.speedAdd = speedAddOpts[Random.Range(0, 3)];
+                    mod.numBounces = bouncesOpts[Random.Range(0, 3)];
+                    mod.numSplits = splitOpts[Random.Range(0, 3)];
 
-                ProjectileModifier mod2 = new ProjectileModifier();
-                mod2.rangeMult = rangeMultOpts[Random.Range(0, 3)];
-                mod2.rangeAdd = rangeAddOpts[Random.Range(0, 3)];
-                mod2.rateMult = rateMultOpts[Random.Range(0, 3)];
-                mod2.rateAdd = rateAddOpts[Random.Range(0, 3)];
-                mod2.damageMult = damageMultOpts[Random.Range(0, 3)];
-                mod2.damageAdd = damageAddOpts[Random.Range(0, 3)];
-                mod2.sizeMult = sizeMultOpts[Random.Range(0, 3)];
-                mod2.sizeAdd = sizeAddOpts[Random.Range(0, 3)];
-                mod2.speedMult = speedMultOpts[Random.Range(0, 3)];
-                mod2.speedAdd = speedAddOpts[Random.Range(0, 3)];
-
-                modifiers.Add(mod1);
-                modifiers.Add(mod2);
+                    modifiers.Add(mod);
+                }
 
                 UpdateRate();
                 rateTimer = 0f;
                 recharge = false;
                 
-                print("2 modifiers randomized!");
+                print(randomModifiers + " modifiers randomized!");
             }
         }
     }
