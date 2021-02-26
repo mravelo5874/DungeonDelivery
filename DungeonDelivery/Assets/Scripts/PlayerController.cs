@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     public float speed = 6f;
     public LayerMask floorLayer;
+    public Transform crosshair;
 
     private Vector3 mousePos;
+    private bool isStill;
 
     void Awake() 
     {
@@ -32,10 +34,20 @@ public class PlayerController : MonoBehaviour
         right.Normalize();
 
         var desiredMoveDirection = forward * vert + right * horz;
-        if (desiredMoveDirection.magnitude >= 0.1f)
+        if (desiredMoveDirection == Vector3.zero)
         {
-            controller.Move(desiredMoveDirection * speed * Time.deltaTime);
+            isStill = true;
         }
+        else
+        {
+            isStill = false;
+            if (desiredMoveDirection.magnitude >= 0.1f)
+            {
+                controller.Move(desiredMoveDirection * speed * Time.deltaTime);
+            }
+        }
+        //print ("isStill: " + isStill);
+        
 
         // Face mouse position direction
         RaycastHit hit;
@@ -43,12 +55,20 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100f, floorLayer))
         {
-            mousePos = hit.point;
-            Vector3 direction = mousePos - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-            rotation.z = 0f;
-            rotation.x = 0f;
-            transform.rotation = rotation;
+            if (hit.point != mousePos)
+            {
+                //print ("mouse moving!");
+                mousePos = hit.point;
+                Vector3 direction = mousePos - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+                rotation.z = 0f;
+                rotation.x = 0f;
+                transform.rotation = rotation;
+
+                // place crosshair
+                crosshair.position = new Vector3(hit.point.x, crosshair.position.y, hit.point.z);
+                crosshair.LookAt(transform);
+            }
         }
     }
 

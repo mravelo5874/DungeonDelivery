@@ -4426,6 +4426,87 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbbdb8b4ae3859d419e8a6940ba7af0e, type: 3}
   m_PrefabInstance: {fileID: 874527126}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &877221098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877221099}
+  - component: {fileID: 877221102}
+  - component: {fileID: 877221101}
+  m_Layer: 10
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &877221099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877221098}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.3, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 1633399654}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &877221101
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877221098}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ec739259ec61f5d4ba3ed6d34fd802a6, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &877221102
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877221098}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &881540482
 GameObject:
   m_ObjectHideFlags: 0
@@ -4592,7 +4673,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 1633399654}
   m_Follow: {fileID: 1633399654}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 24
     OrthographicSize: 8
     NearClipPlane: 0.001
     FarClipPlane: 1000
@@ -6664,6 +6745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1265887387}
   - component: {fileID: 1265887386}
+  - component: {fileID: 1265887388}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6698,6 +6780,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1265887388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265887385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf2a9ea1ed98b1447a35e3cec8423bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathLenSmall: 6
+  pathLenMedium: 12
+  pathLenLarge: 16
+  pathLenXLarge: 24
 --- !u!1001 &1265956347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8374,6 +8472,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 827502011}
+  - {fileID: 877221099}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8393,6 +8492,7 @@ MonoBehaviour:
   floorLayer:
     serializedVersion: 2
     m_Bits: 256
+  crosshair: {fileID: 877221099}
 --- !u!114 &1633399656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8418,9 +8518,9 @@ MonoBehaviour:
     speedMult: 1
     speedAdd: 0
     numBounces: 0
-    numSplits: 1
-    doubleShot: 0
-    tripleShot: 1
+    numSplits: 3
+    doubleShot: 1
+    tripleShot: 0
     ignoreFirstCollision: 0
   randomModifiers: 3
 --- !u!1 &1643808627 stripped
@@ -10591,7 +10691,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -10600,7 +10700,7 @@ Camera:
     height: 1
   near clip plane: 0.001
   far clip plane: 1000
-  field of view: 60
+  field of view: 24
   orthographic: 1
   orthographic size: 8
   m_Depth: -1
