@@ -6796,6 +6796,10 @@ MonoBehaviour:
   pathLenMedium: 12
   pathLenLarge: 16
   pathLenXLarge: 24
+  specialRoomsSmall: 2
+  specialRoomsMedium: 3
+  specialRoomsLarge: 4
+  specialRoomsXLarge: 5
 --- !u!1001 &1265956347
 PrefabInstance:
   m_ObjectHideFlags: 0
