@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public enum DungeonSize 
 {
     SMALL, MEDIUM, LARGE, X_LARGE
@@ -14,10 +15,17 @@ public enum CardinalDirection
 
 public class DungeonGenerator : MonoBehaviour
 {
+    [Header("Main Path Length")]
     public int pathLenSmall;
     public int pathLenMedium;
     public int pathLenLarge;
     public int pathLenXLarge;
+
+    [Header("Number of Special Rooms")]
+    public int specialRoomsSmall;
+    public int specialRoomsMedium;
+    public int specialRoomsLarge;
+    public int specialRoomsXLarge;
 
     void Start() 
     {
@@ -29,21 +37,27 @@ public class DungeonGenerator : MonoBehaviour
     {
         var dungeon = new Dungeon();
         int path_len = 0;
+        int special_rooms = 0;
+        List<Vector2Int> vaildStartPos = new List<Vector2Int>();
 
         switch (size)
         {
             default:
             case DungeonSize.SMALL:
                 path_len = pathLenSmall;
+                special_rooms = specialRoomsSmall;
                 break;
             case DungeonSize.MEDIUM:
                 path_len = pathLenMedium;
+                special_rooms = specialRoomsMedium;
                 break;
             case DungeonSize.LARGE:
                 path_len = pathLenLarge;
+                special_rooms = specialRoomsLarge;
                 break;
             case DungeonSize.X_LARGE:
                 path_len = pathLenXLarge;
+                special_rooms = specialRoomsXLarge;
                 break;
         }
 
@@ -59,44 +73,75 @@ public class DungeonGenerator : MonoBehaviour
         int path_left = path_len;
         while (path_left > 0)
         {
-            // choose a random direction
-            var direction = (CardinalDirection)Random.Range(0, 4);
+            List<Vector2Int> validDirections = new List<Vector2Int>();
 
-            var potential_x = curr_x;
-            var potential_y = curr_y;
-
-            switch (direction)
-            {   
-                default:
-                case CardinalDirection.NORTH:
-                    potential_y = curr_y + 1;
-                    break;
-                case CardinalDirection.SOUTH:
-                    potential_y = curr_y - 1;
-                    break;
-                case CardinalDirection.EAST:
-                    potential_x = curr_x + 1;
-                    break;
-                case CardinalDirection.WEST:
-                    potential_x = curr_x - 1;
-                    break;
-            }
-
-            // check to see if room is valid and empty
-            if (path.Contains(new Vector2Int(potential_x, potential_y)))
-                continue;
-            else
+            foreach(var cardinalDirection in (CardinalDirection[]) System.Enum.GetValues(typeof(CardinalDirection)))
             {
-                // add valid room to path
-                path.Add(new Vector2Int(potential_x, potential_y));
-                curr_x = potential_x;
-                curr_y = potential_y;
+                var potential_x = curr_x;
+                var potential_y = curr_y;
 
-                // add path from prev room
+                switch (cardinalDirection)
+                {   
+                    default:
+                    case CardinalDirection.NORTH:
+                        potential_y = curr_y + 1;
+                        break;
+                    case CardinalDirection.SOUTH:
+                        potential_y = curr_y - 1;
+                        break;
+                    case CardinalDirection.EAST:
+                        potential_x = curr_x + 1;
+                        break;
+                    case CardinalDirection.WEST:
+                        potential_x = curr_x - 1;
+                        break;
+                }
 
+                Vector2Int vector = new Vector2Int(potential_x, potential_y);
 
-                path_left--;
+                // check to see if room is valid and empty
+                if (!path.Contains(vector))
+                {
+                    validDirections.Add(vector);
+                }
             }
+
+            // if no vaild directions, go back one room and try again
+            if (validDirections.Count == 0)
+            {
+                if(path.Count != 0) //prevent IndexOutOfRangeException for empty list
+                {
+                    path.RemoveAt(path.Count - 1);
+                    path_left++;
+                    continue;
+                }
+            }
+
+            // choose a random direction from vaild rooms
+            Vector2Int direction = validDirections[Random.Range(0, validDirections.Count)];
+
+            // add valid room to path
+            path.Add(direction);
+            curr_x = direction.x;
+            curr_y = direction.y;
+            path_left--;
+
+            // add room to list
+            if (path_left != 0)
+                vaildStartPos.Add(direction);
+        }
+
+        // add special room paths
+        int special_rooms_left = special_rooms;
+        while (special_rooms_left > 0)
+        {
+            // choose a random room from the path (except the end room)
+            int index = Random.Range(0, vaildStartPos.Count);
+            Vector2Int startRoom = vaildStartPos[index];
+
+            path_left = Random.RandomRange(0, )
+
+
         }
 
         // add path to dungeon
@@ -152,8 +197,6 @@ public class DungeonGenerator : MonoBehaviour
             prev_chunk = chunk;
             count++;
         }
-
-        // add special room paths
 
 
         // determine chunk type
