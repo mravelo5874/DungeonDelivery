@@ -97,13 +97,13 @@ public class DungeonGenerator : MonoBehaviour
 
             path_len = Random.Range(1, max_special_path + 1);
             var special_path = CreatePath(startRoom, path_len, dungeon);
-            PathToChunks(special_path, dungeon);
 
             // add to special paths if not null
             if (special_path != null)
             {
                 special_rooms_left--;
                 special_paths.Add(special_path);
+                PathToChunks(special_path, dungeon);
             }
         }
 
@@ -131,7 +131,7 @@ public class DungeonGenerator : MonoBehaviour
         // determine each chunk type
         foreach(var chunk in dungeon.chunks)
         {
-
+            DetermineChunkType(chunk);
         }
 
         return dungeon;
@@ -141,8 +141,12 @@ public class DungeonGenerator : MonoBehaviour
     {
         // add paths to dungeon
         int count = 0;
-        dungeon.chunks = new List<Chunk>();
+
+        if (dungeon.chunks == null)
+            dungeon.chunks = new List<Chunk>();
+        
         Chunk prev_chunk = new Chunk(0, 0);
+
         foreach(var room in path)
         {
             var chunk = new Chunk(room.x, room.y);
@@ -270,6 +274,18 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         return path;
+    }
+
+    private void DetermineChunkType(Chunk chunk)
+    {
+        bool n = chunk.n;
+        bool s = chunk.s;
+        bool e = chunk.e;
+        bool w = chunk.w;
+
+
+
+        chunk.chunkType = ChunkType.EMPTY;
     }
 
     public void print_dungeon(Dungeon dungeon)

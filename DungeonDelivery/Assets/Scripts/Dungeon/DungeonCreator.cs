@@ -11,16 +11,20 @@ public class DungeonCreator : MonoBehaviour
 
     private void Start() 
     {
-        var test_dungeon = DungeonGenerator.instance.create(DungeonSize.MEDIUM);    
+        var test_dungeon = DungeonGenerator.instance.create(DungeonSize.X_LARGE);    
         construct(test_dungeon);
     }
 
     public void construct(Dungeon dungeon)
     {
+        print ("num chunks: " + dungeon.chunks.Count);
+
         // place each chunk in world space
+        int count = 0;
         foreach (var chunk in dungeon.chunks)
         {
-            Vector3 pos = new Vector3(chunk.x * chunkUnit, 0f, chunk.y);
+            print (count + " chunk: " + chunk.x + " " + chunk.y);
+            Vector3 pos = new Vector3(chunk.x * chunkUnit, 0f, chunk.y * chunkUnit);
             Instantiate(chunkObject, pos, Quaternion.identity, chunkParent);
         }
     }
