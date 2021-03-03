@@ -8,6 +8,9 @@ public class Dungeon
 
     public bool isChunkRoom(int x, int y)
     {
+        if (chunks == null)
+            return false;
+
         foreach (var chunk in chunks)
         {
             if (chunk.x == x && chunk.y == y)

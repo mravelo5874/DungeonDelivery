@@ -9,7 +9,7 @@ public enum ChunkType // [number of entrances] _ [room shape]
 
 public enum RoomType
 {
-    SPAWN, END, PATH
+    SPAWN, END, PATH, SPECIAL
 }
 
 public class Chunk
